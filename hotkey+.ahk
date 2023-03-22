@@ -450,11 +450,12 @@ CapsLock & e:: Run http://www.google.com/   ; Run Explore   E = {Explore}
 CapsLock & r:: Run Powershell           ; Run Powersh   R = {Powershell}
 CapsLock & t:: Run notepad.exe          ; Run Notepad   T = {Text Editor}
 
+;;Customised;;
+!r:: run C:\cmder\cmder.exe
+
 ;;==================================================================;;
 ;;=========================CapsLock's Stuff=========================;;
 ;;==================================================================;;
-;;Customised;;
-!r:: run C:\cmder\cmder.exe
 
 ;; Mac shortcuts
 $!x::Send ^x
