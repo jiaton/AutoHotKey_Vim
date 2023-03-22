@@ -465,7 +465,7 @@ $!a::Send ^a
 $!z::Send ^z
 $!+z::Send ^y
 $!w::Send ^w
-; $!f::Send ^f
+$!f::Send ^f
 $!n::Send ^n
 $!q::Send !{f4}
 ; $!r::Send ^{f5}
