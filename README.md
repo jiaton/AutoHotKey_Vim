@@ -1,5 +1,5 @@
 # AutoHotKey_Vim
-It's not actual vim style because ⬆️ ⬇️ ⬅️ ➡️ are more straitforward!
+It's not actual vim style because ⬆️ ⬇️ ⬅️ ➡️ are more straight forward!
 
 ## Cursor Operation
 Capslock + ijkl = move to up, left, down, right.
