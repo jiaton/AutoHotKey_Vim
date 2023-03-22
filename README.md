@@ -21,6 +21,7 @@ Alt + W = Ctrl + W
 Alt + F = find
 Alt + N = Ctrl + N
 Alt + M = minimize the window
+Alt + ` = Activate NEXT Window of same type (title checking) of the current APP
 
 ## Application shortcut
 Check out the code. 
