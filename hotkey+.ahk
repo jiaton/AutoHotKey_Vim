@@ -379,14 +379,14 @@ if MButtonState = D
 }
 return
 
-#WheelUp::             ;; Win + Wheel up -> switch virtual desktop
+^#WheelUp::             ;; Ctrl + Win + Wheel up -> switch virtual desktop
 sendInput ^#{Left}
-sleep ,200
+sleep ,100
 return
 
-#WheelDown::            ;;Win + Wheel down
+^#WheelDown::            ;;Ctrl + Win + Wheel down
 sendInput ^#{Right}
-sleep ,200
+sleep ,100
 return
 
 ;;==================== Mouse Wheel Controller ======================||
