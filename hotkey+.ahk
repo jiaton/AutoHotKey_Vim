@@ -502,3 +502,27 @@ Else
 		}
 	}
 Return
+
+;; Switch between 2 screens
+#NoEnv
+SendMode Input
+currentMode := "PC Screen only"
+$^#p::ToggleDisplayMode()
+ToggleDisplayMode() {
+    global currentMode
+    if (currentMode == "PC Screen only") {
+        SetDisplayMode("External Screen only")
+        currentMode := "External Screen only"
+    } else {
+        SetDisplayMode("PC Screen only")
+        currentMode := "PC Screen only"
+    }
+}
+
+SetDisplayMode(mode) {
+    if (mode == "PC Screen only") {
+        Run, %comspec% /c C:\Windows\System32\DisplaySwitch.exe /internal
+    } else {
+        Run, %comspec% /c C:\Windows\System32\DisplaySwitch.exe /external
+    }
+}
