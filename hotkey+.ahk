@@ -451,8 +451,70 @@ CapsLock & r:: Run Powershell           ; Run Powersh   R = {Powershell}
 CapsLock & t:: Run notepad.exe          ; Run Notepad   T = {Text Editor}
 
 ;;Customised;;
-!r:: run C:\cmder\cmder.exe
 
+SwitchToWindow(exeName, runCommand)
+{
+    IfWinExist, ahk_exe %exeName%
+    {
+        IfWinActive, ahk_exe %exeName%
+        {
+            ; If current window is active, try to switch to another window of the same app
+            WinGet, WindowList, List, ahk_exe %exeName%
+            If WindowList > 1
+            {
+                WinActivate, % "ahk_id " WindowList%WindowList%
+            }
+        }
+        else
+        {
+            WinActivate
+        }
+    }
+    else
+        Run, %runCommand%
+}
+
+#+a::  ; Windows + Shift + A
+    SwitchToWindow("Claude.exe", "Claude.exe")
+return
+
+#+d::  ; Windows + Shift + D
+    SwitchToWindow("vivaldi.exe", "vivaldi.exe")
+return
+
+#+v::  ; Windows + Shift + V
+    SwitchToWindow("code.exe", "code.exe")
+return
+
+#+e::  ; Windows + Shift + E
+    IfWinExist, ahk_class CabinetWClass
+    {
+        IfWinActive, ahk_class CabinetWClass
+        {
+            WinGet, WindowList, List, ahk_class CabinetWClass
+            If WindowList > 1
+            {
+                WinActivate, % "ahk_id " WindowList%WindowList%
+            }
+        }
+        else
+        {
+            WinActivate
+        }
+    }
+    else
+        Run, explorer.exe
+return
+
+#+n::  ; Windows + Shift + N
+    SwitchToWindow("Notion.exe", "Notion.exe")
+return
+
+#+o::  ; Windows + Shift + O
+    SwitchToWindow("obsidian.exe", "obsidian.exe")
+return
+
+; !r:: run C:\cmder\cmder.exe
 ;;==================================================================;;
 ;;=========================CapsLock's Stuff=========================;;
 ;;==================================================================;;
@@ -461,15 +523,16 @@ CapsLock & t:: Run notepad.exe          ; Run Notepad   T = {Text Editor}
 $!x::Send ^x
 $!c::Send ^c
 $!v::Send ^v
-; $!s::Send ^s
+$!s::Send ^s
 $!a::Send ^a
 $!z::Send ^z
 $!+z::Send ^y
 $!w::Send ^w
 $!f::Send ^f
 $!n::Send ^n
+$!t::Send ^t
 $!q::Send !{f4}
-; $!r::Send ^{f5}
+$!r::Send ^{f5}
 $!m::Send {LWin Down}{Down}{LWin Up}
 ; $!`::Send {Alt Down}{Shift Down}{Tab}{Shift Up}
 
@@ -483,25 +546,51 @@ ExtractAppTitle(FullTitle)
 }
 !`::
 WinGet, ActiveProcess, ProcessName, A
+
+; Special handling for Explorer
+if (ActiveProcess = "explorer.exe")
+{
+    ; Only look for actual Explorer windows using their specific class
+    WinGet, ExplorerList, List, ahk_class CabinetWClass
+    
+    if (ExplorerList < 2)  ; If only one Explorer window exists
+        Return
+        
+    ; Get the active Explorer window's ID
+    WinGet, ActiveID, ID, A
+    
+    ; Find the next window in sequence
+    Loop, %ExplorerList%
+    {
+        ThisID := ExplorerList%A_Index%
+        if (ActiveID = ThisID && A_Index < ExplorerList)
+        {
+            NextIndex := A_Index + 1
+            WinActivate, % "ahk_id " ExplorerList%NextIndex%
+            break
+        }
+    }
+    Return
+}
+
+; Original code for other applications
 WinGet, OpenWindowsAmount, Count, ahk_exe %ActiveProcess%
 
-If OpenWindowsAmount = 1  ; If only one Window exist, do nothing
+If OpenWindowsAmount = 1
     Return
-	
 Else
-	{
-		WinGetTitle, FullTitle, A
-		AppTitle := ExtractAppTitle(FullTitle)
+{
+    WinGetTitle, FullTitle, A
+    AppTitle := ExtractAppTitle(FullTitle)
 
-		SetTitleMatchMode, 2		
-		WinGet, WindowsWithSameTitleList, List, %AppTitle%
-		
-		If WindowsWithSameTitleList > 1 ; If several Window of same type (title checking) exist
-		{
-			WinActivate, % "ahk_id " WindowsWithSameTitleList%WindowsWithSameTitleList%	; Activate next Window	
-		}
-	}
-Return
+    SetTitleMatchMode, 2		
+    WinGet, WindowsWithSameTitleList, List, %AppTitle%
+    
+    If WindowsWithSameTitleList > 1
+    {
+        WinActivate, % "ahk_id " WindowsWithSameTitleList%WindowsWithSameTitleList%
+    }
+}
 
 ;; Switch between 2 screens
 #NoEnv
